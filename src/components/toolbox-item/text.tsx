@@ -727,6 +727,7 @@ const TextProps = () => {
                       value={[shadowOffsetXPrev === "" ? 0 : shadowOffsetXPrev]}
                       onValueChange={(e) => handleChange("shadowOffsetX", e[0])}
                       max={100}
+                      min={-100}
                       step={1}
                       className={cn("w-[60%]")}
                     />
@@ -756,6 +757,7 @@ const TextProps = () => {
                       value={[shadowOffsetYPrev === "" ? 0 : shadowOffsetYPrev]}
                       onValueChange={(e) => handleChange("shadowOffsetY", e[0])}
                       max={100}
+                      min={-100}
                       step={1}
                       className={cn("w-[60%]")}
                     />
