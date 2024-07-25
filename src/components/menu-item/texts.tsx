@@ -3,84 +3,55 @@ import { Label } from "../ui/label";
 import { ScrollArea } from "../ui/scroll-area";
 import { ADD_TEXT, dispatcher } from "@designcombo/core";
 import { nanoid } from "nanoid";
-import { DEFAULT_FONT } from "@/data/fonts";
+import { DEFAULT_FONT, FONTS } from "@/data/fonts";
 
 export const Texts = () => {
-  const addItem = useCallback(async () => {
-    dispatcher?.dispatch(ADD_TEXT, {
-      payload: {
-        id: nanoid(),
-        details: {
-          text: "Heading",
-          fontSize: 128,
-          fonturl: DEFAULT_FONT.url,
-          fontFamily: DEFAULT_FONT.postScriptName,
-          color: "#ffffff",
+  const addItem = useCallback(
+    async (url: string, fontfamily: string, text?: string) => {
+      dispatcher?.dispatch(ADD_TEXT, {
+        payload: {
+          id: nanoid(),
+          details: {
+            text: text ?? "Heading",
+            fontSize: 128,
+            fonturl: url,
+            fontFamily: fontfamily,
+            color: "#ffffff",
+          },
         },
-      },
-      options: {},
-    });
-  }, []);
+        options: {},
+      });
+    },
+    []
+  );
 
   return (
     <div className="flex flex-col h-full">
+      <div className="text-md text-[#e4e4e7] font-medium h-11 border-b border-border flex items-center px-4 text-muted-foreground">
+        Text
+      </div>
       <ScrollArea>
-        <div className="text-md text-[#e4e4e7] font-medium h-11 border-b border-border flex items-center px-4 text-muted-foreground">
-          Text
-        </div>
         <div
-          onClick={addItem}
+          onClick={() => addItem(DEFAULT_FONT.url, DEFAULT_FONT.postScriptName)}
           className="flex w-full items-center justify-center"
         >
           <Label className="border-4 cursor-pointer rounded-xl p-3 m-3 font-bold text-[28px]">
-            Add title
-          </Label>
-        </div>
-        <div className="flex w-full items-center justify-center">
-          <Label className="border-4 cursor-pointer rounded-xl p-3 m-3 text-[14px]">
-            Add Paragraph
+            Add text
           </Label>
         </div>
         <div className="text-md mb-3 text-[#e4e4e7] px-4 font-medium flex items-center text-muted-foreground">
           Font Styles
         </div>
-        <div className="grid grid-cols-2 gap-3 px-3 items-center justify-center">
-          <Label
-            className="border-4 cursor-pointer rounded-xl text-[15px] text-[#e4e4e7] flex font-medium items-center justify-center "
-            style={{ fontFamily: "Roboto, sans-serif" }}
-          >
-            Roboto
-          </Label>
-          <Label
-            className="border-4 cursor-pointer rounded-xl text-[15px] text-[#e4e4e7] flex font-medium items-center justify-center "
-            style={{ fontFamily: "Open Sans, sans-serif" }}
-          >
-            Open Sans
-          </Label>
-          <Label
-            className="border-4 cursor-pointer rounded-xl text-[15px] text-[#e4e4e7] flex font-medium items-center justify-center "
-            style={{ fontFamily: "Lora, serif" }}
-          >
-            Lora
-          </Label>
-          <Label
-            className="border-4 cursor-pointer rounded-xl text-[15px] text-[#e4e4e7] flex font-medium items-center justify-center "
-            style={{ fontFamily: "Merriweather, serif" }}
-          >
-            Merriweather
-          </Label>
-          <Label
-            className="border-4 cursor-pointer rounded-xl text-[15px] text-[#e4e4e7] flex font-medium items-center justify-center "
-            style={{ fontFamily: "Montserrat, sans-serif" }}
-          >
-            Montserrat
-          </Label>
-          <Label
-            className="border-4 cursor-pointer rounded-xl text-[15px] text-[#e4e4e7] flex font-medium items-center justify-center "
-            style={{ fontFamily: "Playfair Display, serif" }}
-          >
-            Playfair
-          </Label>
+        <div className="grid grid-cols-1 gap-3 px-3 items-center justify-center">
+          {FONTS.map((font, i) => (
+            <img
+              onClick={() => addItem(font.url, font.postScriptName)}
+              className="border-4 h-10 p-1 bg-white cursor-pointer rounded-xl flex font-medium items-center justify-center "
+              key={i}
+              src={font.preview}
+              alt={font.fullName}
+            />
+          ))}
         </div>
       </ScrollArea>
     </div>

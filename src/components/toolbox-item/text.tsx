@@ -4,14 +4,7 @@ import { Textarea } from "../ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { HexColorPicker } from "react-colorful";
 import { Button } from "../ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "../ui/command";
+import { Command, CommandGroup, CommandItem, CommandList } from "../ui/command";
 import {
   ALargeSmall,
   AlignCenter,
@@ -25,9 +18,7 @@ import {
   UnfoldVertical,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { set, transform, upperCase } from "lodash";
 import { Toggle } from "../ui/toggle";
-import { ScrollArea } from "../ui/scroll-area";
 import { Slider } from "../ui/slider";
 import { Input } from "../ui/input";
 import {
@@ -40,6 +31,16 @@ import {
 } from "../ui/select";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
+import {
+  extractNumbersToShadow,
+  extractNumbersToTransform,
+  updateTransform,
+} from "@/utils/utils";
+import {
+  fontCaseTypes,
+  fontSizeTypes,
+  stringContent,
+} from "@/constants/constants";
 
 interface ITextProps {
   backgroundColor: string;
@@ -82,82 +83,6 @@ const defaultProps = {
   width: 500,
   wordSpacing: "normal",
   transform: "scale(1) rotate(0deg) translateX(0) translateY(0)",
-};
-
-const stringContent = [
-  "fontFamily",
-  "fontWeight",
-  "fontStyle",
-  "textAlign",
-  "text",
-  "backgroundColor",
-  "color",
-  "textShadow",
-  "strokeColor",
-  "textDecoration",
-  "shadowColor",
-];
-
-const extractNumbersToTransform = (
-  transformString: string
-): {
-  scale?: number;
-  translateX?: number;
-  translateY?: number;
-  translateZ?: number;
-  rotate?: number;
-} => {
-  const regex = /(scale|translateX|translateY|translateZ|rotate)\(([^)]+)\)/g;
-  let match;
-  const transformations = {};
-  while ((match = regex.exec(transformString)) !== null) {
-    const transformType = match[1];
-    const transformValue = match[2];
-    if (transformType === "rotate") {
-      transformations[transformType] = transformValue.replace("deg", "");
-    } else {
-      transformations[transformType] = transformValue;
-    }
-  }
-  return transformations;
-};
-
-const extractNumbersToShadow = (
-  shadowString: string
-): {
-  offsetX?: number;
-  offsetY?: number;
-  blur?: number;
-  color?: string;
-} => {
-  const regex = /(-?\d+px) (-?\d+px) (\d+px) (#[0-9a-fA-F]{3,6})/;
-  const match = shadowString.match(regex);
-  if (match) {
-    const [_, offsetX, offsetY, blurRadius, color] = match;
-    return {
-      offsetX: parseInt(offsetX, 10),
-      offsetY: parseInt(offsetY, 10),
-      blur: parseInt(blurRadius, 10),
-      color: color,
-    };
-  } else {
-    return null;
-  }
-};
-
-const updateTransform = (
-  transformString: string,
-  transformationType: string,
-  newValue: string | number
-) => {
-  const regex = new RegExp(`(${transformationType}\\([^\\)]+\\))`, "g");
-  if (transformationType === "rotate") {
-    return transformString.replace(
-      regex,
-      `${transformationType}(${newValue}deg)`
-    );
-  }
-  return transformString.replace(regex, `${transformationType}(${newValue})`);
 };
 
 const TextProps = () => {
@@ -215,12 +140,6 @@ const TextProps = () => {
     { icon: <AlignLeft />, type: "left" },
     { icon: <AlignCenter />, type: "center" },
     { icon: <AlignRight />, type: "right" },
-  ];
-  const fontSizeTypes = [64, 72, 80, 96, 128, 144, 160, 192, 256, 288, 320];
-  const fontCaseTypes = [
-    "Lowercase",
-    "Uppercase",
-    // , "Sentence case"
   ];
 
   useEffect(() => {

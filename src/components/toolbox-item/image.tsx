@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Slider } from "../ui/slider";
 import { EDIT_OBJECT, dispatcher, useEditorState } from "@designcombo/core";
 import { useCallback, useEffect, useState } from "react";
+import { extractValues } from "@/utils/utils";
 
 const defaultProps = {
   border: "none",
@@ -15,36 +16,6 @@ const defaultProps = {
   src: "https://ik.imagekit.io/pablituuu/resizeCat.jpg?updatedAt=1710991625522",
   transform: "translate(780px, 265px) scale(1.9636363636363636)",
 };
-
-function extractValues(filters: string) {
-  const regex = {
-    saturate: /saturate\((\d+)%\)/,
-    brightness: /brightness\((\d+)%\)/,
-    contrast: /contrast\((\d+)%\)/,
-    hueRotate: /hue-rotate\((\d+)deg\)/,
-  };
-
-  const resultados = {
-    saturate: parseInt(filters.match(regex.saturate)?.[1], 10) ?? 100,
-    brightness: parseInt(filters.match(regex.brightness)?.[1], 10) ?? 100,
-    contrast: parseInt(filters.match(regex.contrast)?.[1], 10) ?? 100,
-    hueRotate: parseInt(filters.match(regex.hueRotate)?.[1], 10) ?? 0,
-  };
-
-  return resultados;
-}
-
-interface IImageProps {
-  border: string;
-  borderRadius: string;
-  boxShadow: string;
-  filter: string;
-  height: number;
-  opacity: number;
-  preview: string;
-  src: string;
-  transform: string;
-}
 
 export default function ImageProps() {
   const { activeIds, trackItemsMap } = useEditorState();

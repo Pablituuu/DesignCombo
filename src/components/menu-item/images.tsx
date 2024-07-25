@@ -2,26 +2,9 @@ import { useCallback } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import { ADD_IMAGE, dispatcher, useEditorState } from "@designcombo/core";
 import { nanoid } from "nanoid";
+import { IMAGES } from "@/data/images";
 
 export const Images = () => {
-  const images = [
-    {
-      src: "https://ik.imagekit.io/pablituuu/resizeCat.jpg?updatedAt=1710991625522",
-      width: 360,
-      height: 550,
-    },
-    {
-      src: "https://ik.imagekit.io/cliqdev/e/1/images/bki6ow7w-pexels-andrea-piacquadio-3811855.jpg?tr=q-60",
-      width: 1024,
-      height: 1024,
-    },
-    {
-      src: "https://ik.imagekit.io/pablituuu/bmw-gs.jpg?updatedAt=1708469797613",
-      width: 1024,
-      height: 1024,
-    },
-  ];
-
   const addItem = useCallback((src: string) => {
     dispatcher?.dispatch(ADD_IMAGE, {
       payload: {
@@ -41,7 +24,7 @@ export const Images = () => {
       </div>
       <ScrollArea>
         <div className="grid grid-cols-2 items-center gap-2 m-2">
-          {images.map((image, index) => (
+          {IMAGES.map((image, index) => (
             <div
               onClick={() => addItem(image.src)}
               key={index}
