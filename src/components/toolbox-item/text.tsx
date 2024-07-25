@@ -41,6 +41,7 @@ import {
   fontSizeTypes,
   stringContent,
 } from "@/constants/constants";
+import { set } from "lodash";
 
 interface ITextProps {
   backgroundColor: string;
@@ -61,6 +62,8 @@ interface ITextProps {
   width: number;
   wordSpacing: string;
   transform: string;
+  WebkitTextStrokeColor: string;
+  WebkitTextStrokeWidth: string;
 }
 
 const defaultProps = {
@@ -78,11 +81,12 @@ const defaultProps = {
   text: "Heading",
   textAlign: "left",
   textDecoration: "none",
-  textShadow:
-    "0px 0px 0px #ffffff, 0px 0px 0px #ffffff, 0px 0px 0px #ffffff, 0px 0px 0px #ffffff, 0px 0px 0px #ffffff",
+  textShadow: "0px 0px 0px #ffffff",
   width: 500,
   wordSpacing: "normal",
   transform: "scale(1) rotate(0deg) translateX(0) translateY(0)",
+  WebkitTextStrokeColor: "#ffffff",
+  WebkitTextStrokeWidth: "0px",
 };
 
 const TextProps = () => {
@@ -163,16 +167,18 @@ const TextProps = () => {
         if (trackItem.details.textShadow !== "none")
           textShadow = trackItem.details.textShadow;
         const splitString = textShadow.split(", ");
-        const propStroke = extractNumbersToShadow(splitString[1]);
-        const propShadow = extractNumbersToShadow(splitString[4]);
-        const strokeWidth = propStroke.offsetX;
-        const strokeColor = propStroke.color;
+        const strokeWidth = Number(
+          trackItem.details.WebkitTextStrokeWidth.split("px")[0]
+        );
+        const strokeColor = trackItem.details.WebkitTextStrokeColor;
+        const propShadow = extractNumbersToShadow(splitString[0]);
         const shadowOffsetX = propShadow.offsetX;
         const shadowOffsetY = propShadow.offsetY;
         const shadowBlur = propShadow.blur;
         const shadowColor = propShadow.color;
-        setStrokeWidth(strokeWidth);
-        setStrokeWidthPrev(strokeWidth);
+        setStrokeWidth(strokeWidth ?? 0);
+        setStrokeWidthPrev(strokeWidth ?? 0);
+        setStrokeColor(strokeColor ?? defaultProps.WebkitTextStrokeColor);
         setStrokeColor(strokeColor);
         setShadowOffsetX(shadowOffsetX);
         setShadowOffsetXPrev(shadowOffsetX);
@@ -196,36 +202,36 @@ const TextProps = () => {
       if (type === "strokeWidth") {
         setStrokeWidth(Number(e));
         setStrokeWidthPrev(Number(e));
-        type = "textShadow";
-        e = `-${e}px -${e}px 0px ${strokeColor}, ${e}px -${e}px 0px ${strokeColor}, -${e}px ${e}px 0px ${strokeColor}, ${e}px ${e}px 0px ${strokeColor}, ${shadowOffsetX}px ${shadowOffsetY}px ${shadowBlur}px ${shadowColor}`;
+        type = "WebkitTextStrokeWidth";
+        e = `${e}px`;
       }
       if (type === "strokeColor") {
         setStrokeColor(String(e));
-        type = "textShadow";
-        e = `-${strokeWidth}px -${strokeWidth}px 0px ${e}, ${strokeWidth}px -${strokeWidth}px 0px ${e}, -${strokeWidth}px ${strokeWidth}px 0px ${e}, ${strokeWidth}px ${strokeWidth}px 0px ${e}, ${shadowOffsetX}px ${shadowOffsetY}px ${shadowBlur}px ${shadowColor}`;
+        type = "WebkitTextStrokeColor";
+        e = `${e}`;
       }
       if (type === "shadowOffsetX") {
         setShadowOffsetX(Number(e));
         setShadowOffsetXPrev(Number(e));
         type = "textShadow";
-        e = `-${strokeWidth}px -${strokeWidth}px 0px ${strokeColor}, ${strokeWidth}px -${strokeWidth}px 0px ${strokeColor}, -${strokeWidth}px ${strokeWidth}px 0px ${strokeColor}, ${strokeWidth}px ${strokeWidth}px 0px ${strokeColor}, ${e}px ${shadowOffsetY}px ${shadowBlur}px ${shadowColor}`;
+        e = `${e}px ${shadowOffsetY}px ${shadowBlur}px ${shadowColor}`;
       }
       if (type === "shadowOffsetY") {
         setShadowOffsetY(Number(e));
         setShadowOffsetYPrev(Number(e));
         type = "textShadow";
-        e = `-${strokeWidth}px -${strokeWidth}px 0px ${strokeColor}, ${strokeWidth}px -${strokeWidth}px 0px ${strokeColor}, -${strokeWidth}px ${strokeWidth}px 0px ${strokeColor}, ${strokeWidth}px ${strokeWidth}px 0px ${strokeColor}, ${shadowOffsetX}px ${e}px ${shadowBlur}px ${shadowColor}`;
+        e = `${shadowOffsetX}px ${e}px ${shadowBlur}px ${shadowColor}`;
       }
       if (type === "shadowBlur") {
         setShadowBlur(Number(e));
         setShadowBlurPrev(Number(e));
         type = "textShadow";
-        e = `-${strokeWidth}px -${strokeWidth}px 0px ${strokeColor}, ${strokeWidth}px -${strokeWidth}px 0px ${strokeColor}, -${strokeWidth}px ${strokeWidth}px 0px ${strokeColor}, ${strokeWidth}px ${strokeWidth}px 0px ${strokeColor}, ${shadowOffsetX}px ${shadowOffsetY}px ${e}px ${shadowColor}`;
+        e = `${shadowOffsetX}px ${shadowOffsetY}px ${e}px ${shadowColor}`;
       }
       if (type === "shadowColor") {
         setShadowColor(String(e));
         type = "textShadow";
-        e = `-${strokeWidth}px -${strokeWidth}px 0px ${strokeColor}, ${strokeWidth}px -${strokeWidth}px 0px ${strokeColor}, -${strokeWidth}px ${strokeWidth}px 0px ${strokeColor}, ${strokeWidth}px ${strokeWidth}px 0px ${strokeColor}, ${shadowOffsetX}px ${shadowOffsetY}px ${shadowBlur}px ${e}`;
+        e = `${shadowOffsetX}px ${shadowOffsetY}px ${shadowBlur}px ${e}`;
       }
       if (type === "transformScale") {
         setScalePrev(Number(e));
@@ -537,7 +543,7 @@ const TextProps = () => {
                           strokeWidthPrev === "" ? 0 : Number(strokeWidthPrev),
                         ]}
                         onValueChange={(e) => handleChange("strokeWidth", e[0])}
-                        max={6}
+                        max={100}
                         min={0}
                         step={1}
                         className={cn("w-[60%]")}

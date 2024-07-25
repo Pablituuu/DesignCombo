@@ -1,13 +1,19 @@
 import { useCallback } from "react";
 import { Label } from "../ui/label";
 import { ScrollArea } from "../ui/scroll-area";
-import { ADD_TEXT, dispatcher } from "@designcombo/core";
+import { ADD_TEXT, dispatcher, loadFonts } from "@designcombo/core";
 import { nanoid } from "nanoid";
 import { DEFAULT_FONT, FONTS } from "@/data/fonts";
 
 export const Texts = () => {
   const addItem = useCallback(
     async (url: string, fontfamily: string, text?: string) => {
+      await loadFonts([
+        {
+          fontFamily: fontfamily,
+          url,
+        },
+      ]);
       dispatcher?.dispatch(ADD_TEXT, {
         payload: {
           id: nanoid(),
@@ -17,6 +23,8 @@ export const Texts = () => {
             fonturl: url,
             fontFamily: fontfamily,
             color: "#ffffff",
+            wordWrap: "break-word",
+            wordBreak: "break-all",
           },
         },
         options: {},
