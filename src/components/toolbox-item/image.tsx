@@ -37,6 +37,7 @@ export default function ImageProps() {
       if (currentFilters.brightness)
         setBrightnessPrev(currentFilters.brightness);
       if (currentFilters.contrast) setConstrastPrev(currentFilters.contrast);
+      if (trackItem.details.opacity) setOpacityPrev(trackItem.details.opacity);
     }
   }, []);
 

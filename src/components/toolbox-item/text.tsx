@@ -42,6 +42,8 @@ import {
   stringContent,
 } from "@/constants/constants";
 import { set } from "lodash";
+import { FONTS } from "@/data/fonts";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface ITextProps {
   backgroundColor: string;
@@ -150,7 +152,7 @@ const TextProps = () => {
     const [id] = activeIds;
     const trackItem = trackItemsMap[id];
     if (trackItem) {
-      setProps({ ...(trackItem.details as ITextProps), ...defaultProps });
+      setProps({ ...defaultProps, ...(trackItem.details as ITextProps) });
       setOpacityPrev(trackItem.details.opacity);
       trackItem.details.backgroundColor === "transparent"
         ? setIsBackgroundTransparent(true)
@@ -243,6 +245,17 @@ const TextProps = () => {
         type = "transform";
         e = updateTransform(props.transform, "rotate", Number(e));
       }
+      if (type === "color") {
+        setProps({ ...props, color: String(e) });
+      }
+      if (type === "textDecoration") {
+        if (props.textDecoration === "underline") {
+          e = "none";
+        } else {
+          e = "underline";
+        }
+        setProps({ ...props, textDecoration: String(e) });
+      }
       dispatcher.dispatch(EDIT_OBJECT, {
         payload: {
           details: {
@@ -250,7 +263,6 @@ const TextProps = () => {
           },
         },
       });
-      setProps({ ...props, [e]: e });
     },
     [
       props,
@@ -304,11 +316,7 @@ const TextProps = () => {
                 aria-expanded={openFontFamily}
                 className="w-[200px] justify-between"
               >
-                {props?.fontFamily
-                  ? fontFamilyTypes.find(
-                      (framework) => framework.value === props?.fontFamily
-                    )?.label
-                  : "Select framework..."}
+                {props?.fontFamily ?? "Select framework..."}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
@@ -316,33 +324,13 @@ const TextProps = () => {
               style={{ zIndex: 300 }}
               className="flex w-[200px] p-0"
             >
-              <Command>
-                <CommandGroup>
-                  <CommandList>
-                    {fontFamilyTypes.map((fontFamilyType) => (
-                      <CommandItem
-                        key={fontFamilyType.value}
-                        defaultValue={props?.fontFamily}
-                        value={fontFamilyType.value}
-                        onSelect={(currentValue) => {
-                          setProps({ ...props, fontFamily: currentValue });
-                          setOpenFontFamily(false);
-                        }}
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            props?.fontFamily === fontFamilyType.value
-                              ? "opacity-100"
-                              : "opacity-0"
-                          )}
-                        />
-                        {fontFamilyType.label}
-                      </CommandItem>
-                    ))}
-                  </CommandList>
-                </CommandGroup>
-              </Command>
+              <ScrollArea className="h-[400px] w-full py-2">
+                {FONTS.map((font, i) => (
+                  <div key={i} defaultValue={props?.fontFamily}>
+                    {font.family}
+                  </div>
+                ))}
+              </ScrollArea>
             </PopoverContent>
           </Popover>
           <Select onValueChange={(e) => handleChange("fontSize", e)}>
