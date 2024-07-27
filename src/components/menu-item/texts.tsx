@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { Label } from "../ui/label";
 import { ScrollArea } from "../ui/scroll-area";
 import { ADD_TEXT, dispatcher, loadFonts } from "@designcombo/core";
@@ -8,12 +8,6 @@ import { DEFAULT_FONT, FONTS } from "@/data/fonts";
 export const Texts = () => {
   const addItem = useCallback(
     async (url: string, fontfamily: string, text?: string) => {
-      await loadFonts([
-        {
-          fontFamily: fontfamily,
-          url,
-        },
-      ]);
       dispatcher?.dispatch(ADD_TEXT, {
         payload: {
           id: nanoid(),
@@ -51,15 +45,18 @@ export const Texts = () => {
           Font Styles
         </div>
         <div className="grid grid-cols-1 gap-3 px-3 items-center justify-center">
-          {FONTS.map((font, i) => (
-            <img
-              onClick={() => addItem(font.url, font.postScriptName)}
-              className="border-4 h-10 p-1 bg-white cursor-pointer rounded-xl flex font-medium items-center justify-center "
-              key={i}
-              src={font.preview}
-              alt={font.fullName}
-            />
-          ))}
+          {FONTS.map(
+            (font, i) =>
+              font.fullName.includes("Regular") && (
+                <img
+                  onClick={() => addItem(font.url, font.postScriptName)}
+                  className="border-4 h-10 p-1 bg-white cursor-pointer rounded-xl flex font-medium items-center justify-center "
+                  key={i}
+                  src={font.preview}
+                  alt={font.fullName}
+                />
+              )
+          )}
         </div>
       </ScrollArea>
     </div>

@@ -1,4 +1,9 @@
-import { EDIT_OBJECT, dispatcher, useEditorState } from "@designcombo/core";
+import {
+  EDIT_OBJECT,
+  dispatcher,
+  loadFonts,
+  useEditorState,
+} from "@designcombo/core";
 import { useCallback, useEffect, useState } from "react";
 import { Textarea } from "../ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -41,7 +46,6 @@ import {
   fontSizeTypes,
   stringContent,
 } from "@/constants/constants";
-import { set } from "lodash";
 import { FONTS } from "@/data/fonts";
 import { ScrollArea } from "../ui/scroll-area";
 
@@ -116,32 +120,8 @@ const TextProps = () => {
   const [strokeWidth, setStrokeWidth] = useState<number | "">(0);
   const [strokeWidthPrev, setStrokeWidthPrev] = useState<number | "">(0);
   const [rotatePrev, setRotatePrev] = useState<number | "">(0);
-  const fontFamilyTypes = [
-    {
-      value: "next.js",
-      label: "Next.js",
-    },
-    {
-      value: "sveltekit",
-      label: "SvelteKit",
-    },
-    {
-      value: "nuxt.js",
-      label: "Nuxt.js",
-    },
-    {
-      value: "remix",
-      label: "Remix",
-    },
-    {
-      value: "astro",
-      label: "Astro",
-    },
-    {
-      value: "Roboto-Bold",
-      label: "Roboto-Bold",
-    },
-  ];
+  const [isBold, setIsBold] = useState(false);
+  const [isItalic, setIsItalic] = useState(false);
   const textAlignTypes = [
     { icon: <AlignLeft />, type: "left" },
     { icon: <AlignCenter />, type: "center" },
@@ -153,6 +133,16 @@ const TextProps = () => {
     const trackItem = trackItemsMap[id];
     if (trackItem) {
       setProps({ ...defaultProps, ...(trackItem.details as ITextProps) });
+      FONTS.forEach((font) => {
+        if (
+          font.postScriptName.includes(
+            trackItem.details.fontFamily.split("-")[0]
+          )
+        ) {
+          font.fullName.includes("Bold") && setIsBold(true);
+          font.fullName.includes("Italic") && setIsItalic(true);
+        }
+      });
       setOpacityPrev(trackItem.details.opacity);
       trackItem.details.backgroundColor === "transparent"
         ? setIsBackgroundTransparent(true)
@@ -197,6 +187,9 @@ const TextProps = () => {
     (type: string, e: string | number) => {
       if (!stringContent.includes(type)) {
         e = Number(e);
+      }
+      if (type === "textAlign") {
+        setProps({ ...props, textAlign: String(e) });
       }
       if (type === "opacity") {
         setOpacityPrev(Number(e));
@@ -296,6 +289,118 @@ const TextProps = () => {
     }
   }, []);
 
+  const handleUpdateFont = useCallback(
+    async (font: string) => {
+      const newFont = FONTS.find(
+        (f) => f.family === font && f.fullName.includes("Regular")
+      );
+      setProps({ ...props, fontFamily: newFont?.postScriptName });
+      dispatcher.dispatch(EDIT_OBJECT, {
+        payload: {
+          details: {
+            fontFamily: newFont?.postScriptName,
+            fontUrl: newFont?.url,
+          },
+        },
+      });
+      setIsBold(
+        FONTS.find((f) => f.family === font && f.fullName.includes("Bold"))
+          ? true
+          : false
+      );
+      setIsItalic(
+        FONTS.find((f) => f.family === font && f.fullName.includes("Italic"))
+          ? true
+          : false
+      );
+      setOpenFontFamily(false);
+    },
+    [props]
+  );
+
+  const handleBold = useCallback(() => {
+    const transformTo = props?.fontFamily.includes("Bold") ? "Regular" : "Bold";
+    const family = props?.fontFamily.split("-")[0];
+    const includeItalic = props?.fontFamily.split("-")[1].includes("Italic")
+      ? true
+      : false;
+    let newFont = undefined;
+    let newPostScriptName = undefined;
+    if (!includeItalic) {
+      if (transformTo === "Bold") {
+        newPostScriptName = `${family}-Bold`;
+      } else {
+        newPostScriptName = `${family}-Regular`;
+      }
+    } else {
+      if (transformTo === "Bold") {
+        newPostScriptName = `${family}-BoldItalic`;
+      } else {
+        newPostScriptName = `${family}-Italic`;
+      }
+    }
+    FONTS.forEach((font) => {
+      if (font.postScriptName === newPostScriptName) {
+        newFont = font;
+      }
+    });
+    dispatcher.dispatch(EDIT_OBJECT, {
+      payload: {
+        details: {
+          fontFamily: newFont?.postScriptName,
+          fontUrl: newFont?.url,
+        },
+      },
+    });
+    setProps({
+      ...props,
+      fontFamily: newFont?.postScriptName,
+    });
+  }, [props, isItalic]);
+
+  const handleItalic = useCallback(() => {
+    const transformTo = props?.fontFamily.includes("Italic")
+      ? "Regular"
+      : "Italic";
+    const family = props?.fontFamily.split("-")[0];
+    const includeBold = props?.fontFamily.split("-")[1].includes("Bold")
+      ? true
+      : false;
+    let newFont = undefined;
+    let newPostScriptName = undefined;
+    console.log(includeBold, transformTo);
+    if (!includeBold) {
+      if (transformTo === "Italic") {
+        newPostScriptName = `${family}-Italic`;
+      } else {
+        newPostScriptName = `${family}-Regular`;
+      }
+    } else {
+      if (transformTo === "Italic") {
+        newPostScriptName = `${family}-BoldItalic`;
+      } else {
+        newPostScriptName = `${family}-Bold`;
+      }
+    }
+    FONTS.forEach((font) => {
+      if (font.postScriptName === newPostScriptName) {
+        newFont = font;
+      }
+    });
+    dispatcher.dispatch(EDIT_OBJECT, {
+      payload: {
+        details: {
+          fontFamily: newFont?.postScriptName,
+          fontUrl: newFont?.url,
+        },
+      },
+    });
+    setProps({
+      ...props,
+      fontFamily: newFont?.postScriptName,
+    });
+  }, [props, isItalic]);
+
   return (
     <div className="flex flex-col overflor-auto">
       <div className="text-md text-[#e4e4e7] font-medium h-11 border-b  border-border flex items-center px-4 text-muted-foreground">
@@ -325,9 +430,14 @@ const TextProps = () => {
               className="flex w-[200px] p-0"
             >
               <ScrollArea className="h-[400px] w-full py-2">
-                {FONTS.map((font, i) => (
-                  <div key={i} defaultValue={props?.fontFamily}>
-                    {font.family}
+                {[...new Set(FONTS.map((f) => f.family))].map((font, i) => (
+                  <div
+                    key={i}
+                    className="m-2 cursor-pointer"
+                    defaultValue={props?.fontFamily}
+                    onClick={() => handleUpdateFont(font)}
+                  >
+                    {font}
                   </div>
                 ))}
               </ScrollArea>
@@ -353,14 +463,23 @@ const TextProps = () => {
         </div>
         <div className="grid grid-cols-6">
           <Toggle
-            onClick={() => handleChange("fontWeight", "bold")}
+            disabled={!isBold}
+            pressed={props.fontFamily.includes("Bold")}
+            onClick={() => handleBold()}
             size="sm"
             className="w-[45px]"
             variant="outline"
           >
             <Bold />
           </Toggle>
-          <Toggle size="sm" className="w-[45px]" variant="outline">
+          <Toggle
+            disabled={!isItalic}
+            pressed={props.fontFamily.includes("Italic")}
+            onClick={() => handleItalic()}
+            size="sm"
+            className="w-[45px]"
+            variant="outline"
+          >
             <Italic />
           </Toggle>
           <Toggle
