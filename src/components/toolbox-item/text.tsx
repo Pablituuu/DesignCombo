@@ -59,7 +59,7 @@ interface ITextProps {
   fontWeight: string;
   height: number;
   letterSpacing: string;
-  lineHeight: string;
+  lineHeight: string | number;
   opacity: number;
   text: string;
   textAlign: string;
@@ -188,6 +188,10 @@ const TextProps = () => {
       if (!stringContent.includes(type)) {
         e = Number(e);
       }
+      if (type === "lineHeight") {
+        setProps({ ...props, lineHeight: Number(e) / 10 });
+        e = Number(e) / 10;
+      }
       if (type === "textAlign") {
         setProps({ ...props, textAlign: String(e) });
       }
@@ -268,26 +272,32 @@ const TextProps = () => {
     ]
   );
 
-  const validateString = useCallback((type: string, e: string) => {
-    const regex = /^[0-9 ]*$/;
-    if (regex.test(e)) {
-      if (type === "opacity") {
-        setOpacityPrev(e === "" ? "" : Number(e));
+  const validateString = useCallback(
+    (type: string, e: string) => {
+      const regex = /^[0-9 ]*$/;
+      if (regex.test(e)) {
+        if (type === "opacity") {
+          setOpacityPrev(e === "" ? "" : Number(e));
+        }
+        if (type === "strokeWidth") {
+          setStrokeWidthPrev(e === "" ? "" : Number(e));
+        }
+        if (type === "shadowOffsetX") {
+          setShadowOffsetXPrev(e === "" ? "" : Number(e));
+        }
+        if (type === "shadowOffsetY") {
+          setShadowOffsetYPrev(e === "" ? "" : Number(e));
+        }
+        if (type === "shadowBlur") {
+          setShadowBlurPrev(e === "" ? "" : Number(e));
+        }
+        if (type === "lineHeight") {
+          setProps({ ...props, lineHeight: Number(e) });
+        }
       }
-      if (type === "strokeWidth") {
-        setStrokeWidthPrev(e === "" ? "" : Number(e));
-      }
-      if (type === "shadowOffsetX") {
-        setShadowOffsetXPrev(e === "" ? "" : Number(e));
-      }
-      if (type === "shadowOffsetY") {
-        setShadowOffsetYPrev(e === "" ? "" : Number(e));
-      }
-      if (type === "shadowBlur") {
-        setShadowBlurPrev(e === "" ? "" : Number(e));
-      }
-    }
-  }, []);
+    },
+    [props]
+  );
 
   const handleUpdateFont = useCallback(
     async (font: string) => {
@@ -561,13 +571,51 @@ const TextProps = () => {
                 <UnfoldVertical />
               </Button>
             </PopoverTrigger>
-            <PopoverContent style={{ zIndex: 300 }} className="flex w-auto p-0">
-              <div className="flex flex-col">
-                {fontCaseTypes.map((fontCase, i) => (
-                  <Button variant="ghost" key={i}>
-                    {fontCase}
-                  </Button>
-                ))}
+            <PopoverContent
+              style={{ zIndex: 300 }}
+              className="flex flex-col w-auto p-0"
+            >
+              <div className="flex flex-col px-2 pb-2">
+                <div className="text-md text-[#e4e4e7] font-medium h-11 flex items-center text-muted-foreground">
+                  Line Height
+                </div>
+                <div className="grid grid-cols-3 items-center">
+                  <div className="flex col-span-1 w-[60px]">
+                    <Input
+                      value={
+                        props?.lineHeight === "normal"
+                          ? 10
+                          : Number(props?.lineHeight) * 10
+                      }
+                      onChange={(e) =>
+                        validateString("lineHeight", e.target.value)
+                      }
+                      onBlur={() =>
+                        handleChange("lineHeight", props?.lineHeight)
+                      }
+                      size="sm"
+                    />
+                  </div>
+                  <div className="flex justify-center col-span-2">
+                    <Slider
+                      defaultValue={[
+                        props?.lineHeight === "normal"
+                          ? 10
+                          : Number(props?.lineHeight) * 10,
+                      ]}
+                      value={[
+                        props?.lineHeight === "normal"
+                          ? 10
+                          : Number(props?.lineHeight) * 10,
+                      ]}
+                      onValueChange={(e) => handleChange("lineHeight", e[0])}
+                      max={100}
+                      min={0}
+                      step={1}
+                      className={cn("w-[60%]")}
+                    />
+                  </div>
+                </div>
               </div>
             </PopoverContent>
           </Popover>
