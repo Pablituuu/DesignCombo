@@ -1,13 +1,15 @@
 import { Timeline, Provider, Scene, useEditorState } from "@designcombo/core";
 import MenuList from "./components/menu-list";
 import { MenuItem } from "./components/menu-item";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import useDataState from "./store/use-data-state";
 import { getCompactFontData } from "./utils/fonts";
 import { FONTS } from "./data/fonts";
 import { Button } from "./components/ui/button";
 import ControlItem from "./components/control-item/item";
 import { ToolboxlItem } from "./components/toolbox-item";
+import { nanoid } from "nanoid";
+import axios from "axios";
 
 export const theme = {
   colors: {
@@ -31,11 +33,63 @@ export const theme = {
 
 function App() {
   const { setCompactFonts, setFonts } = useDataState();
+  const {
+    sceneSize,
+    fps,
+    duration,
+    trackItemIds,
+    trackItemsMap,
+    transitionIds,
+    transitionsMap,
+  } = useEditorState();
 
   useEffect(() => {
     setCompactFonts(getCompactFontData(FONTS));
     setFonts(FONTS);
   }, []);
+
+  const exportProject = useCallback(async () => {
+    {
+      const json = {
+        id: nanoid(),
+        projectId: "pablituuu",
+        size: sceneSize,
+        fps,
+        duration,
+        trackItemIds,
+        trackItemsMap,
+        transitionIds,
+        transitionsMap,
+      };
+      const response = await axios.post(`https://api.x-eight.xyz/`, json);
+      const id = response.data.render.id;
+      let resolve = false;
+      do {
+        const status = await axios.get(`https://api.x-eight.xyz/${id}/status`);
+        if (status.data.render.progress === 100) {
+          resolve = true;
+        }
+      } while (!resolve);
+      const videoURL = await fetch(response.data.render.url);
+      const blob = await videoURL.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "video.mp4");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    }
+  }, [
+    trackItemIds,
+    trackItemsMap,
+    transitionIds,
+    transitionsMap,
+    sceneSize,
+    fps,
+    duration,
+  ]);
 
   return (
     <Provider theme={theme}>
@@ -58,7 +112,7 @@ function App() {
               />
             </svg>
           </Button>
-          <Button size="sm" variant="secondary">
+          <Button size="sm" onClick={exportProject} variant="secondary">
             Export
           </Button>
         </div>

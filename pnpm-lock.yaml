@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@designcombo/core':
-        specifier: ^0.4.5
-        version: 0.4.6(@dnd-kit/core@6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dnd-kit/utilities@3.2.2(react@18.3.1))(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(scenejs@1.10.3)(zustand@4.5.4(@types/react@18.3.3)(react@18.3.1))
+        specifier: ^0.4.8
+        version: 0.4.8(@dnd-kit/core@6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dnd-kit/utilities@3.2.2(react@18.3.1))(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(scenejs@1.10.3)(zustand@4.5.4(@types/react@18.3.3)(react@18.3.1))
       '@dnd-kit/core':
         specifier: ^6.1.0
         version: 6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -53,6 +53,9 @@ importers:
       '@radix-ui/react-toggle':
         specifier: ^1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      axios:
+        specifier: ^1.7.2
+        version: 1.7.2
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -268,8 +271,8 @@ packages:
   '@daybrush/utils@1.13.0':
     resolution: {integrity: sha512-ALK12C6SQNNHw1enXK+UO8bdyQ+jaWNQ1Af7Z3FNxeAwjYhQT7do+TRE4RASAJ3ObaS2+TJ7TXR3oz2Gzbw0PQ==}
 
-  '@designcombo/core@0.4.6':
-    resolution: {integrity: sha512-gj/WTuCuG4VcdsJ5JxeMjohCb90KlobbFIKKyLj7b6MmgHIeXRGwt0PTqTwS2Ev/BgfYtGzXQyr4htF/fh5ODA==}
+  '@designcombo/core@0.4.8':
+    resolution: {integrity: sha512-DHMBf5c3GB5V+M8/3SzoU+98APPlpNZZlJHkL1QL91e9WWiSFvS4H47FCCUppTfIIn3dFMX63HohyqEokQVeCw==}
     peerDependencies:
       '@dnd-kit/core': ^6.1.0
       '@dnd-kit/utilities': ^3.2.2
@@ -1118,11 +1121,14 @@ packages:
   '@radix-ui/rect@1.1.0':
     resolution: {integrity: sha512-A9+lCBZoaMJlVKcRBz2YByCG+Cp2t6nAnMnNba+XiWxnj6r4JUFqfsgwocMBZU9LPtdxC6wB56ySYpc7LQIoJg==}
 
+  '@remotion/media-utils@4.0.167':
+    resolution: {integrity: sha512-znIZcwQFxbUwZgiW7wUlgd3gdv/aEW8xFbNeEDyD5NFUjZOx2j0KI+RIrn5Lc/dfVtD6jBW0R5bXVY455W8tQg==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
   '@remotion/paths@4.0.167':
     resolution: {integrity: sha512-wS8NF4LOmqFj4uzCWwqR6tcJPr9Y7R68jVkAAfRvXOVrhwlXPALFrvWyLODyGHptRNXoOZTLj0Qb2o2sZgYIQA==}
-
-  '@remotion/paths@4.0.182':
-    resolution: {integrity: sha512-x1+5XOgYsac06f4BJ8IpCV7ohP5n90SrAkdT4GIRD+48iBteAaR43iEKEmC8iG7GYAp6EGXqOGLojCqccdUNSA==}
 
   '@remotion/player@4.0.167':
     resolution: {integrity: sha512-ScmwTABgydb6u7uxYp96gg3ZjsWofuOCpZHUj0qiDyiZBFPzpJwTmD1XyCJQGYoz/GcuPsJ9gnb7g/vZ8LEHSA==}
@@ -1132,12 +1138,6 @@ packages:
 
   '@remotion/shapes@4.0.167':
     resolution: {integrity: sha512-codsX7nwJVy8xEZ/oKxxo7NePldHK86iCow6a7xpAdh8h+911xHq0JfXccuJMXAuwLg4YR9wlACXKrh/y3TDaA==}
-    peerDependencies:
-      react: '>=16.8.0'
-      react-dom: '>=16.8.0'
-
-  '@remotion/shapes@4.0.182':
-    resolution: {integrity: sha512-Df/eFCn7BBNBOJ6hV8ixqRzE6LdPSlLNzM/mSPaJxvu3IPdIiR99nHVTLKtcGNZU9P0tb+nHh0E5rvHPc93dSQ==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -1430,6 +1430,9 @@ packages:
     hasBin: true
     peerDependencies:
       postcss: ^8.1.0
+
+  axios@1.7.2:
+    resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
 
   babel-plugin-macros@3.1.0:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
@@ -1761,6 +1764,15 @@ packages:
 
   flatted@3.3.1:
     resolution: {integrity: sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==}
+
+  follow-redirects@1.15.6:
+    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
 
   foreground-child@3.2.1:
     resolution: {integrity: sha512-PXUUyLqrR2XCWICfv6ukppP96sdFwWbNEnfEMt7jNsISjMsvaLNinAHNDYyvkyU+SZG2BTSbT5NjG+vZslfGTA==}
@@ -2279,6 +2291,9 @@ packages:
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+
+  proxy-from-env@1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
 
   psl@1.9.0:
     resolution: {integrity: sha512-E/ZsdU4HLs/68gYzgGTkMicWTLPdAftJLfJFlLUAAKZGkStNU72sZjT66SnMDVOfOWY/YAoiD7Jxa9iHvngcag==}
@@ -2957,7 +2972,7 @@ snapshots:
 
   '@daybrush/utils@1.13.0': {}
 
-  '@designcombo/core@0.4.6(@dnd-kit/core@6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dnd-kit/utilities@3.2.2(react@18.3.1))(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(scenejs@1.10.3)(zustand@4.5.4(@types/react@18.3.3)(react@18.3.1))':
+  '@designcombo/core@0.4.8(@dnd-kit/core@6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dnd-kit/utilities@3.2.2(react@18.3.1))(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(scenejs@1.10.3)(zustand@4.5.4(@types/react@18.3.3)(react@18.3.1))':
     dependencies:
       '@dnd-kit/core': 6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@dnd-kit/utilities': 3.2.2(react@18.3.1)
@@ -2965,9 +2980,10 @@ snapshots:
       '@emotion/styled': 11.13.0(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1)
       '@radix-ui/react-scroll-area': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-slider': 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@remotion/paths': 4.0.182
+      '@remotion/media-utils': 4.0.167(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@remotion/paths': 4.0.167
       '@remotion/player': 4.0.167(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@remotion/shapes': 4.0.182(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@remotion/shapes': 4.0.167(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@remotion/transitions': 4.0.167(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       fabric: 6.0.0-rc4
       idb: 8.0.0
@@ -3793,9 +3809,13 @@ snapshots:
 
   '@radix-ui/rect@1.1.0': {}
 
-  '@remotion/paths@4.0.167': {}
+  '@remotion/media-utils@4.0.167(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      remotion: 4.0.167(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
-  '@remotion/paths@4.0.182': {}
+  '@remotion/paths@4.0.167': {}
 
   '@remotion/player@4.0.167(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -3806,12 +3826,6 @@ snapshots:
   '@remotion/shapes@4.0.167(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@remotion/paths': 4.0.167
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  '@remotion/shapes@4.0.182(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@remotion/paths': 4.0.182
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
@@ -4100,8 +4114,7 @@ snapshots:
 
   array-union@2.1.0: {}
 
-  asynckit@0.4.0:
-    optional: true
+  asynckit@0.4.0: {}
 
   autoprefixer@10.4.19(postcss@8.4.39):
     dependencies:
@@ -4112,6 +4125,14 @@ snapshots:
       picocolors: 1.0.1
       postcss: 8.4.39
       postcss-value-parser: 4.2.0
+
+  axios@1.7.2:
+    dependencies:
+      follow-redirects: 1.15.6
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
 
   babel-plugin-macros@3.1.0:
     dependencies:
@@ -4221,7 +4242,6 @@ snapshots:
   combined-stream@1.0.8:
     dependencies:
       delayed-stream: 1.0.0
-    optional: true
 
   commander@4.1.1: {}
 
@@ -4293,8 +4313,7 @@ snapshots:
 
   deep-is@0.1.4: {}
 
-  delayed-stream@1.0.0:
-    optional: true
+  delayed-stream@1.0.0: {}
 
   delegates@1.0.0:
     optional: true
@@ -4507,6 +4526,8 @@ snapshots:
 
   flatted@3.3.1: {}
 
+  follow-redirects@1.15.6: {}
+
   foreground-child@3.2.1:
     dependencies:
       cross-spawn: 7.0.3
@@ -4517,7 +4538,6 @@ snapshots:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
-    optional: true
 
   fraction.js@4.3.7: {}
 
@@ -4822,13 +4842,11 @@ snapshots:
       braces: 3.0.3
       picomatch: 2.3.1
 
-  mime-db@1.52.0:
-    optional: true
+  mime-db@1.52.0: {}
 
   mime-types@2.1.35:
     dependencies:
       mime-db: 1.52.0
-    optional: true
 
   mimic-response@2.1.0:
     optional: true
@@ -5026,6 +5044,8 @@ snapshots:
       source-map-js: 1.2.0
 
   prelude-ls@1.2.1: {}
+
+  proxy-from-env@1.1.0: {}
 
   psl@1.9.0:
     optional: true

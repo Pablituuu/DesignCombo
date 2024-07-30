@@ -378,7 +378,6 @@ const TextProps = () => {
       : false;
     let newFont = undefined;
     let newPostScriptName = undefined;
-    console.log(includeBold, transformTo);
     if (!includeBold) {
       if (transformTo === "Italic") {
         newPostScriptName = `${family}-Italic`;

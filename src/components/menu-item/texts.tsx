@@ -7,15 +7,15 @@ import { DEFAULT_FONT, FONTS } from "@/data/fonts";
 
 export const Texts = () => {
   const addItem = useCallback(
-    async (url: string, fontfamily: string, text?: string) => {
+    async (url: string, fontFamily: string, text?: string) => {
       dispatcher?.dispatch(ADD_TEXT, {
         payload: {
           id: nanoid(),
           details: {
             text: text ?? "Heading",
             fontSize: 128,
-            fonturl: url,
-            fontFamily: fontfamily,
+            fontUrl: url,
+            fontFamily: fontFamily,
             color: "#ffffff",
             wordWrap: "break-word",
             wordBreak: "break-all",
