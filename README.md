@@ -1,15 +1,13 @@
-# Video editor in React JS
+# React Video Editor
 
 The project is for video editing through tools such as DesignCombo, ShaCDN, React, etc. In order to improve the quality of the user experience that comes with the use of these very heavy software, all this in a light and web-based way.
 
 ## Demo
 
-https://react-video-editor-mu.vercel.app/
 ![Logo](image/image.png)
 
 ## Authors
 
-- [@xorb](https://github.com/xorb)
 - [@Pablituuu](https://www.github.com/Pablituuu)
 
 ## Installation
@@ -40,6 +38,5 @@ Install react-video-editor with npm
 
 ## Contact
 
-- [@xorb](https://github.com/xorb)
 - [@Pablituuu](https://www.github.com/Pablituuu)
 - [@Discord](https://discord.gg/nJHPtgKP)
