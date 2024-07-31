@@ -10,6 +10,11 @@ The project is for video editing through tools such as DesignCombo, ShaCDN, Reac
 
 - [@Pablituuu](https://www.github.com/Pablituuu)
 
+## Contact
+
+- [@Pablituuu](https://www.github.com/Pablituuu)
+- [@Discord](https://discord.gg/nJHPtgKP)
+
 ## Installation
 
 Install react-video-editor with npm
@@ -35,8 +40,3 @@ Install react-video-editor with npm
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
-## Contact
-
-- [@Pablituuu](https://www.github.com/Pablituuu)
-- [@Discord](https://discord.gg/nJHPtgKP)
