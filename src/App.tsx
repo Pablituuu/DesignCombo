@@ -1,4 +1,11 @@
-import { Timeline, Provider, Scene, useEditorState } from "@designcombo/core";
+import {
+  Timeline,
+  Provider,
+  Scene,
+  useEditorState,
+  dispatcher,
+  DESIGN_RESIZE,
+} from "@designcombo/core";
 import MenuList from "./components/menu-list";
 import { MenuItem } from "./components/menu-item";
 import { useCallback, useEffect } from "react";
@@ -10,6 +17,52 @@ import ControlItem from "./components/control-item/item";
 import { ToolboxlItem } from "./components/toolbox-item";
 import { nanoid } from "nanoid";
 import axios from "axios";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "./components/ui/popover";
+import { Icons } from "./components/shared/icons";
+interface ResizeOptionProps {
+  label: string;
+  icon: string;
+  value: ResizeValue;
+}
+interface ResizeValue {
+  width: number;
+  height: number;
+  name: string;
+}
+
+const RESIZE_OPTIONS: ResizeOptionProps[] = [
+  {
+    label: "16:9",
+    icon: "landscape",
+    value: {
+      width: 1920,
+      height: 1080,
+      name: "16:9",
+    },
+  },
+  {
+    label: "9:16",
+    icon: "portrait",
+    value: {
+      width: 1080,
+      height: 1920,
+      name: "9:16",
+    },
+  },
+  {
+    label: "1:1",
+    icon: "square",
+    value: {
+      width: 1080,
+      height: 1080,
+      name: "1:1",
+    },
+  },
+];
 
 export const theme = {
   colors: {
@@ -91,6 +144,12 @@ function App() {
     duration,
   ]);
 
+  const handleResize = (payload: ResizeValue) => {
+    dispatcher.dispatch(DESIGN_RESIZE, {
+      payload,
+    });
+  };
+
   return (
     <Provider theme={theme}>
       <div className="h-screen w-screen flex flex-col">
@@ -112,6 +171,24 @@ function App() {
               />
             </svg>
           </Button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline">Resize</Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-60 z-[250]">
+              <div className="grid gap-4 text-sm">
+                {RESIZE_OPTIONS.map((option, index) => (
+                  <ResizeOption
+                    key={index}
+                    label={option.label}
+                    icon={option.icon}
+                    value={option.value}
+                    handleResize={handleResize}
+                  />
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
           <Button size="sm" onClick={exportProject} variant="secondary">
             Export
           </Button>
@@ -130,5 +207,28 @@ function App() {
     </Provider>
   );
 }
+
+const ResizeOption = ({
+  label,
+  icon,
+  value,
+  handleResize,
+}: ResizeOptionProps & { handleResize: (payload: ResizeValue) => void }) => {
+  const Icon = Icons[icon];
+  return (
+    <div
+      onClick={() => handleResize(value)}
+      className="flex items-center gap-4 hover:bg-zinc-50/10 cursor-pointer"
+    >
+      <div className="text-muted-foreground">
+        <Icon />
+      </div>
+      <div>
+        <div>{label}</div>
+        <div className="text-muted-foreground">Tiktok, Instagram</div>
+      </div>
+    </div>
+  );
+};
 
 export default App;

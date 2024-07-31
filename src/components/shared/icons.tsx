@@ -33,7 +33,10 @@ import {
   X,
   Text,
   Type,
-} from 'lucide-react';
+  RectangleHorizontal,
+  RectangleVertical,
+  Square,
+} from "lucide-react";
 
 export type Icon = LucideIcon;
 
@@ -89,6 +92,9 @@ export const Icons = {
       </defs>
     </svg>
   ),
+  landscape: RectangleHorizontal,
+  portrait: RectangleVertical,
+  square: Square,
   layoutTemplate: LayoutTemplate,
   shirt: Shirt,
   gitHub: ({ ...props }: LucideProps) => (
